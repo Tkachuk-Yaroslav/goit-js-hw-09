@@ -2,6 +2,8 @@
 import flatpickr from "flatpickr";
 // Додатковий імпорт стилів
 import "flatpickr/dist/flatpickr.min.css";
+import Notiflix from "notiflix";
+import 'notiflix/dist/notiflix-3.2.6.min.css'
 
 const daysEl = document.querySelector('.value[data-days]');
 const hoursEl = document.querySelector('.value[data-hours]');
@@ -41,7 +43,8 @@ const options = {
   minuteIncrement: 1,
   onClose(selectedDates) {
     if (selectedDates[0] < new Date()) {
-      alert('Please choose a date in the future');
+      // alert('Please choose a date in the future');
+      Notiflix.Notify.failure('Please choose a date in the future');
       return;
     }
     startBtn.removeAttribute('disabled');
