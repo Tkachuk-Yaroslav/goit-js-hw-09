@@ -31,6 +31,7 @@ function onFormSubmit(event) {
   //перевіряю на введення некоректних даних
   if (dilay < 0 || step < 0 || amount <= 0) {
     Notiflix.Notify.failure(`Please enter a correct value`);
+    return;
   }
 
   //роблю цикл який створює проміси
