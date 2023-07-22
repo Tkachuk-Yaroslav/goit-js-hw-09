@@ -12,6 +12,8 @@ const secondsEl = document.querySelector('.value[data-seconds]');
 const startBtn = document.querySelector('button[data-start]');
 const myInput = document.querySelector('#datetime-picker');
 let timerId = null;
+//добавив змінну в яку буду записувати час
+let userTime = null;
 
 startBtn.setAttribute('disabled', true);
 
@@ -47,16 +49,63 @@ const options = {
       Notiflix.Notify.failure('Please choose a date in the future');
       return;
     }
+    else {
+      userTime = selectedDates[0];
+      console.log(userTime);
+    }
     startBtn.removeAttribute('disabled');
 
-    const showTimer = () => {
-      const now = new Date();
-      localStorage.setItem('selectedData', selectedDates[0]);
-      const selectData = new Date(localStorage.getItem('selectedData'));
+    // const showTimer = () => {
+    //   const now = new Date();
+    //   localStorage.setItem('selectedData', selectedDates[0]);
+    //   const selectData = new Date(localStorage.getItem('selectedData'));
 
-      if (!selectData) return;
+    //   if (!selectData) return;
 
-      const diff = selectData - now;
+    //   const diff = selectData - now;
+    //   const { days, hours, minutes, seconds } = convertMs(diff);
+    //   daysEl.textContent = addLeadingZero(days);
+    //   hoursEl.textContent = addLeadingZero(hours);
+    //   minutesEl.textContent = addLeadingZero(minutes);
+    //   secondsEl.textContent = addLeadingZero(seconds);
+
+    //   if (
+    //     daysEl.textContent === '00' &&
+    //     hoursEl.textContent === '00' &&
+    //     minutesEl.textContent === '00' &&
+    //     secondsEl.textContent === '00'
+    //   ) {
+    //     clearInterval(timerId);
+    //     startBtn.removeAttribute('disabled');
+    //     myInput.removeAttribute('disabled');
+    //   }
+    // };
+    const onClick = () => {
+      startBtn.setAttribute('disabled', true);
+      myInput.setAttribute('disabled', true);
+      if (timerId) {
+        clearInterval(timerId);     
+      }
+      showTimer();
+      timerId = setInterval(showTimer, 1000);
+      
+    };
+    startBtn.addEventListener('click', onClick);
+    // console.log(convertMs(2000)); // {days: 0, hours: 0, minutes: 0, seconds: 2}
+    // console.log(convertMs(140000)); // {days: 0, hours: 0, minutes: 2, seconds: 20}
+    // console.log(convertMs(24140000)); // {days: 0, hours: 6 minutes: 42, seconds: 20}  
+  }
+}
+//Виніс функцію з опшинсів
+const showTimer = () => {
+  const now = new Date();
+      //було...
+      // localStorage.setItem('selectedData', userTime);
+      // const selectData = new Date(localStorage.getItem('selectedData'));
+      //стало...
+      if (!userTime) return;
+
+      const diff = userTime - now;
       const { days, hours, minutes, seconds } = convertMs(diff);
       daysEl.textContent = addLeadingZero(days);
       hoursEl.textContent = addLeadingZero(hours);
@@ -70,26 +119,9 @@ const options = {
         secondsEl.textContent === '00'
       ) {
         clearInterval(timerId);
-        startBtn.removeAttribute('disabled');
+        // startBtn.removeAttribute('disabled');
         myInput.removeAttribute('disabled');
       }
     };
-    const onClick = () => {
-      startBtn.setAttribute('disabled', true);
-      myInput.setAttribute('disabled', true);
-      if (timerId) {
-        clearInterval(timerId);
-        
-        
-      }
-      showTimer();
-      timerId = setInterval(showTimer, 1000);
-      
-    };
-    startBtn.addEventListener('click', onClick);
-    // console.log(convertMs(2000)); // {days: 0, hours: 0, minutes: 0, seconds: 2}
-    // console.log(convertMs(140000)); // {days: 0, hours: 0, minutes: 2, seconds: 20}
-    // console.log(convertMs(24140000)); // {days: 0, hours: 6 minutes: 42, seconds: 20}  
-  }
-}
+
 flatpickr('#datetime-picker', { ...options });
