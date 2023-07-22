@@ -70,14 +70,21 @@ const options = {
         secondsEl.textContent === '00'
       ) {
         clearInterval(timerId);
+        startBtn.removeAttribute('disabled');
+        myInput.removeAttribute('disabled');
       }
     };
     const onClick = () => {
+      startBtn.setAttribute('disabled', true);
+      myInput.setAttribute('disabled', true);
       if (timerId) {
         clearInterval(timerId);
+        
+        
       }
       showTimer();
       timerId = setInterval(showTimer, 1000);
+      
     };
     startBtn.addEventListener('click', onClick);
     // console.log(convertMs(2000)); // {days: 0, hours: 0, minutes: 0, seconds: 2}
